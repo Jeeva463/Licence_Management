@@ -26,7 +26,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="licence_lic")
+@Table(name="li_cence")
 public class Licence implements Serializable {
 	
 	private final long serialversionUID=1l;//first koduthth fielda maththi vera field kodukkum podhu 2l versionaaga maarum--1-version number,l--long
@@ -48,8 +48,10 @@ public class Licence implements Serializable {
 	@Column(name = "licence_key")
 	private String licenceKey;
 	@Enumerated (EnumType.STRING)
+	@Column(name = "status")
 	private Status status;
 	@Enumerated(EnumType.STRING)
+	@Column(name = "expiredStatus")
 	private ExpiredStatus expiredStatus;
 	
 	
