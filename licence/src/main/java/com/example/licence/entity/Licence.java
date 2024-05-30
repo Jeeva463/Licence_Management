@@ -1,5 +1,6 @@
 package com.example.licence.entity;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.UUID;
 
@@ -19,17 +20,19 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name="li_cence")
 public class Licence implements Serializable {
-	
-	private final long serialversionUID=1l;//first koduthth fielda maththi vera field kodukkum podhu 2l versionaaga maarum--1-version number,l--long
+	@Serial
+	private static  final long serialversionUID=1l;//first koduthth fielda maththi vera field kodukkum podhu 2l versionaaga maarum--1-version number,l--long
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
@@ -51,7 +54,7 @@ public class Licence implements Serializable {
 	@Column(name = "status")
 	private Status status;
 	@Enumerated(EnumType.STRING)
-	@Column(name = "expiredStatus")
+	@Column(name = "expired_status")
 	private ExpiredStatus expiredStatus;
 	
 	
