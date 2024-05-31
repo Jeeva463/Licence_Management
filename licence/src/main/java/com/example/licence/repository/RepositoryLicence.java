@@ -10,4 +10,6 @@ import com.example.licence.entity.Licence;
 @Repository
 public interface RepositoryLicence extends JpaRepository<Licence, UUID> {
 
+	
+
 }

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,9 +34,10 @@ public class EmployeeLicence {
 		return serviceLicence.getByid(id);
 		
 	}
-	@GetMapping("/generatekey")
-	public String generateLicencekey() {
-		return serviceLicence.generateLicencekey();
+	
+	@PutMapping("/generatekey/{id}/{companyName}")
+	public Licence generateLicencekey(@PathVariable UUID id,@PathVariable String companyName) {
+		return serviceLicence.generateLicencekey(id,companyName);
 	}
 
 }
