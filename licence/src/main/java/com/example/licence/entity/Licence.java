@@ -56,7 +56,4 @@ public class Licence implements Serializable {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "expired_status")
 	private ExpiredStatus expiredStatus;
-	
-	
-
 }
