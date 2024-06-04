@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -63,19 +64,30 @@ public class ServiceLicence {
 //		
 //	}
 	// Convert SecretKey to Base64 string for storage***
-	public String getSecretkey() {
-		
-	  return Base64.getEncoder().encodeToString(secretKey.getEncoded());//getEncoded(): getEncoded() முறையானது முக்கியப் பொருளை பைட் வரிசை வடிவத்தில் வழங்குகிறது. 
-	                                                                                  //இந்த குறியிடப்பட்ட படிவம் விசையை பாதுகாப்பாக சேமிக்க அல்லது அனுப்ப பயனுள்ளதாக இருக்கும்.
-	                                                                    //Base64.getEncoder().encodeToString(...): Encodes the byte array into a Base64 string.
-		    	
-	}
-    public ServiceLicence() throws Exception {
+//	public String getSecretkey() {
+//		
+//	  return Base64.getEncoder().encodeToString(secretKey.getEncoded());//getEncoded(): getEncoded() முறையானது முக்கியப் பொருளை பைட் வரிசை வடிவத்தில் வழங்குகிறது. 
+//	                                                                                  //இந்த குறியிடப்பட்ட படிவம் விசையை பாதுகாப்பாக சேமிக்க அல்லது அனுப்ப பயனுள்ளதாக இருக்கும்.
+//	                                                                    //Base64.getEncoder().encodeToString(...): Encodes the byte array into a Base64 string.
+//		    	
+//	}
+    public String GenerateSec() throws Exception {
         // Generate a new secret key during service initialization
         this.secretKey = EncryptionDecryption.secretkeyGen();
+        return Base64.getEncoder().encodeToString(secretKey.getEncoded());
         
     }
-    public String encryptLicenseKey(String licenseKey) throws Exception {
+
+    public String encryptData(String licenseKey) throws Exception {
         return EncryptionDecryption.encrypt(licenseKey, secretKey);
     }
+
+    public String decryptData(String encryptedLicenseKey) throws Exception {
+        return EncryptionDecryption.decrypt(encryptedLicenseKey, secretKey);
+    }
+    public void setSecretKey(String key) {
+        byte[] decodedKey = Base64.getDecoder().decode(key);
+        this.secretKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
+    }
+
 }

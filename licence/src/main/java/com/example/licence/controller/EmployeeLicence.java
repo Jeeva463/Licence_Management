@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.licence.dto.DataResponse;
 import com.example.licence.encryptionutil.EncryptionDecryption;
 import com.example.licence.entity.Licence;
 import com.example.licence.service.ServiceLicence;
@@ -48,19 +49,52 @@ public class EmployeeLicence {
 //		return serviceLicence.generateLicencekey(id,companyName);
 //		
 //	}
-	@GetMapping("/secretkey")
-	
-	public String getSecretkey() {
-		return serviceLicence.getSecretkey();
-	
-	}
-	@PostMapping("/encrypt/{licenseKey}")
-    public String encryptLicenseKey(@PathVariable String licenseKey) {
+//	@GetMapping("/secretkey")
+//	
+//	public String getSecretkey() {
+//		return serviceLicence.getSecretkey();
+//	
+//	}
+//	@PostMapping("/encrypt/{licenseKey}")
+//    public String encryptLicenseKey(@PathVariable String licenseKey) {
+//        try {
+//            return serviceLicence.encryptLicenseKey(licenseKey);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return "Error encrypting license key";
+//        }
+//    }
+
+    @PostMapping("/generate-and-encrypt/{licenseKey}")
+    public DataResponse generateAndEncrypt(@PathVariable String licenseKey) {
         try {
-            return serviceLicence.encryptLicenseKey(licenseKey);
+            // Generate a new secret key
+            String secretKey = serviceLicence.GenerateSec();
+            
+            // Encrypt the license key
+            String encryptedLicenseKey = serviceLicence.encryptData(licenseKey);
+            
+            // Return both the encrypted license key and the secret key in the response
+            return new DataResponse(encryptedLicenseKey, secretKey);
         } catch (Exception e) {
             e.printStackTrace();
-            return "Error encrypting license key";
+            // Return an error response (you can customize this as needed)
+            return new DataResponse("Error encrypting data", "Error generating secret key");
         }
     }
+    @PostMapping("/decrypt")
+    public String decryptData(@RequestParam String encryptedLicenseKey, @RequestParam String secretKey) {
+        try {
+            // Set the secret key
+        	serviceLicence.setSecretKey(secretKey);
+            
+            // Decrypt the license key
+            return serviceLicence.decryptData(encryptedLicenseKey);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Error decrypting data";
+
+        }
+        }
 }
+
