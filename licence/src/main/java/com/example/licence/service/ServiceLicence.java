@@ -78,12 +78,12 @@ public class ServiceLicence {
         
     }
 
-    public String encryptData(String licenseKey) throws Exception {
-        return EncryptionDecryption.encrypt(licenseKey, secretKey);
+    public String encryptData(String data) throws Exception {
+        return EncryptionDecryption.encrypt(data, secretKey);
     }
 
-    public String decryptData(String encryptedLicenseKey) throws Exception {
-        return EncryptionDecryption.decrypt(encryptedLicenseKey, secretKey);
+    public String decryptData(String encryptedLicenseKey,String encryptedemailId) throws Exception {
+        return EncryptionDecryption.decrypt(encryptedLicenseKey,encryptedemailId, secretKey);
     }
     public void setSecretKey(String key) {
         byte[] decodedKey = Base64.getDecoder().decode(key);

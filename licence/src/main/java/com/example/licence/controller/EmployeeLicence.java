@@ -65,17 +65,17 @@ public class EmployeeLicence {
 //        }
 //    }
 
-    @PostMapping("/generate-and-encrypt/{licenseKey}")
-    public DataResponse generateAndEncrypt(@PathVariable String licenseKey) {
+    @GetMapping("/generate-and-encrypt")
+    public DataResponse generateAndEncrypt(@RequestBody String data) {
         try {
             // Generate a new secret key
             String secretKey = serviceLicence.GenerateSec();
             
             // Encrypt the license key
-            String encryptedLicenseKey = serviceLicence.encryptData(licenseKey);
+            String response = serviceLicence.encryptData(data);
             
             // Return both the encrypted license key and the secret key in the response
-            return new DataResponse(encryptedLicenseKey, secretKey);
+            return new DataResponse(response, secretKey);
         } catch (Exception e) {
             e.printStackTrace();
             // Return an error response (you can customize this as needed)
@@ -83,13 +83,13 @@ public class EmployeeLicence {
         }
     }
     @PostMapping("/decrypt")
-    public String decryptData(@RequestParam String encryptedLicenseKey, @RequestParam String secretKey) {
+    public String decryptData(@RequestBody DataResponse response) {
         try {
             // Set the secret key
-        	serviceLicence.setSecretKey(secretKey);
+        	serviceLicence.setSecretKey(response.getSecretKey());
             
             // Decrypt the license key
-            return serviceLicence.decryptData(encryptedLicenseKey);
+            return serviceLicence.decryptData(response.getEncryptedLicenseKey(),response.getEncryptedemailId());
         } catch (Exception e) {
             e.printStackTrace();
             return "Error decrypting data";
