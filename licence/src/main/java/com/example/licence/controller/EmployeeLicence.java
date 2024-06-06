@@ -1,28 +1,17 @@
 package com.example.licence.controller;
-
-import java.security.Key;
 import java.util.Optional;
 import java.util.UUID;
-
-import javax.crypto.SecretKey;
-
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.example.licence.dto.DataResponse;
 import com.example.licence.encryptionutil.EncryptionDecryption;
 import com.example.licence.entity.Licence;
 import com.example.licence.service.ServiceLicence;
-
-import lombok.Data;
 
 @RestController
 @RequestMapping("/api/licence")
@@ -65,7 +54,7 @@ public class EmployeeLicence {
 //        }
 //    }
 
-    @GetMapping("/generate-and-encrypt")
+    @PostMapping("/generate-and-encrypt")
     public DataResponse generateAndEncrypt(@RequestBody String data) {
         try {
             // Generate a new secret key
@@ -82,19 +71,19 @@ public class EmployeeLicence {
             return new DataResponse("Error encrypting data", "Error generating secret key");
         }
     }
-    @PostMapping("/decrypt")
-    public String decryptData(@RequestBody DataResponse response) {
-        try {
-            // Set the secret key
-        	serviceLicence.setSecretKey(response.getSecretKey());
-            
-            // Decrypt the license key
-            return serviceLicence.decryptData(response.getEncryptedLicenseKey(),response.getEncryptedemailId());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "Error decrypting data";
-
-        }
-        }
+//    @PostMapping("/decrypt")
+//    public String decryptData(@RequestBody DataResponse response) {
+//        try {
+//            // Set the secret key
+//        	serviceLicence.setSecretKey(response.getSecretKey());
+//            
+//            // Decrypt the license key
+//            return serviceLicence.decryptData(response.getData());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return "Error decrypting data";
+//
+//        }
+//        }
 }
 

@@ -12,6 +12,7 @@ import javax.crypto.spec.SecretKeySpec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.licence.dto.DataResponse;
 import com.example.licence.encryptionutil.EncryptionDecryption;
 import com.example.licence.entity.Licence;
 import com.example.licence.enumaration.Status;
@@ -81,13 +82,13 @@ public class ServiceLicence {
     public String encryptData(String data) throws Exception {
         return EncryptionDecryption.encrypt(data, secretKey);
     }
-
-    public String decryptData(String encryptedLicenseKey,String encryptedemailId) throws Exception {
-        return EncryptionDecryption.decrypt(encryptedLicenseKey,encryptedemailId, secretKey);
-    }
-    public void setSecretKey(String key) {
-        byte[] decodedKey = Base64.getDecoder().decode(key);
-        this.secretKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
-    }
+//
+//    public String decryptData(String data) throws Exception {
+//        return EncryptionDecryption.decrypt(data, secretKey);
+//    }
+//    public void setSecretKey(String key) {
+//        byte[] decodedKey = Base64.getDecoder().decode(key);
+//        this.secretKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
+//    }
 
 }

@@ -5,6 +5,8 @@ import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
+import com.example.licence.dto.DataResponse;
+
 public class EncryptionDecryption {
 	
 
@@ -23,29 +25,12 @@ public class EncryptionDecryption {
 	        byte[] encryptedBytes = cipher.doFinal(data.getBytes());
 	        return Base64.getEncoder().encodeToString(encryptedBytes);
 	    }
-	 public static String decrypt(String encryptedLicenseKey, String encryptedemailId, SecretKey secretKey) throws Exception {
+	 public static String decrypt(String data, SecretKey secretKey) throws Exception {
 	        Cipher cipher = Cipher.getInstance("AES");
 	        cipher.init(Cipher.DECRYPT_MODE, secretKey);
-	        String commit = encryptedLicenseKey+encryptedemailId;
-	        byte[] decodedBytes = Base64.getDecoder().decode(commit);
+	        //String commit = encryptedLicenseKey+encryptedemailId;
+	        byte[] decodedBytes = Base64.getDecoder().decode(data.getBytes());
 	        byte[] decryptedBytes = cipher.doFinal(decodedBytes);
 	        return new String(decryptedBytes);
-//		 
-//	        Cipher cipher = Cipher.getInstance("AES");
-//	        cipher.init(Cipher.DECRYPT_MODE, secretKey);
-//
-//	        // Decode and decrypt the encrypted license key
-//	        byte[] decodedLicenseBytes = Base64.getDecoder().decode(encryptedLicenseKey);
-//	        byte[] decryptedLicenseBytes = cipher.doFinal(decodedLicenseBytes);
-//	        String decryptedLicenseKey = new String(decryptedLicenseBytes);
-//
-//	        // Decode and decrypt the encrypted email ID
-////	        byte[] decodedEmailBytes = Base64.getDecoder().decode(encryptedemailId);
-////	        byte[] decryptedEmailBytes = cipher.doFinal(decodedEmailBytes);
-////	        String decryptedEmailId = new String(decryptedEmailBytes);
-//
-//	        // Return the decrypted license key and email ID
-//	        return decryptedLicenseKey /*+ ":" + decryptedEmailI*/;
-	    }
-
+	 }
 }
