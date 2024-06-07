@@ -1,9 +1,11 @@
 package com.example.licence.controller;
+
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +23,7 @@ public class EmployeeLicence {
 	EncryptionDecryption encryptionDecryption;
 	
 	@PostMapping("/create")
+	
 	public Licence createlicence(@RequestBody Licence licence){
 		serviceLicence.createlicence(licence);
 		return licence;
@@ -32,28 +35,6 @@ public class EmployeeLicence {
 		return serviceLicence.getByid(id);
 		
 	}
-//	@PutMapping("/generatekey/{id}/{companyName}")
-//	
-//	public Licence generateLicencekey(@PathVariable UUID id,@PathVariable String companyName) {
-//		return serviceLicence.generateLicencekey(id,companyName);
-//		
-//	}
-//	@GetMapping("/secretkey")
-//	
-//	public String getSecretkey() {
-//		return serviceLicence.getSecretkey();
-//	
-//	}
-//	@PostMapping("/encrypt/{licenseKey}")
-//    public String encryptLicenseKey(@PathVariable String licenseKey) {
-//        try {
-//            return serviceLicence.encryptLicenseKey(licenseKey);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return "Error encrypting license key";
-//        }
-//    }
-
     @PostMapping("/generate-and-encrypt")
     public DataResponse generateAndEncrypt(@RequestBody String data) {
         try {
@@ -71,19 +52,5 @@ public class EmployeeLicence {
             return new DataResponse("Error encrypting data", "Error generating secret key");
         }
     }
-//    @PostMapping("/decrypt")
-//    public String decryptData(@RequestBody DataResponse response) {
-//        try {
-//            // Set the secret key
-//        	serviceLicence.setSecretKey(response.getSecretKey());
-//            
-//            // Decrypt the license key
-//            return serviceLicence.decryptData(response.getData());
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return "Error decrypting data";
-//
-//        }
-//        }
 }
 

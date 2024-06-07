@@ -68,9 +68,9 @@ public class Licence implements Serializable {
 	@Column(name = "expiry_date")
 	private String expiryDate;
 	
-	@Column(name = "activation_data")
+	@Column(name = "activation_date")
 	private String activationDate;
 	
-	@Column(name = "grace_period")
-	private String gracePeriod;
+	@Column(name = "grace_periodenddate")
+	private String gracePeriodEndDate;
 }
