@@ -2,6 +2,8 @@ package com.example.licence.service;
 
 import java.time.LocalDateTime;
 import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import javax.crypto.SecretKey;
@@ -20,7 +22,12 @@ public class AdminService {
 	
 	@Autowired
 	RepositoryLicence repositoryLicence;
+	
 	private SecretKey secretKey;
+//	private Object expiredStatus;
+//	private Object expiryDate;
+//	private Object activationDate;
+//	private Object gracePeriodEndDate;
 	
 	 public String decryptData(String data) throws Exception {
 	        return EncryptionDecryption.decrypt(data, secretKey);
@@ -31,26 +38,27 @@ public class AdminService {
 	        this.secretKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
 	        
 	    }
-	    public Licence getdetails(String licenceKey) {
-			return repositoryLicence.findBylicenceKey(licenceKey);
+	    public Map getdetails(String licenceKey) {
+	    	Optional<Licence> licence = repositoryLicence.findBylicenceKey(licenceKey);
+	    	Map<String, Object> map = new HashMap<String, Object>();
+	    	map.put("time", LocalDateTime.now());
+	    	map.put("Licence", licence);
+			return map;
 			
 		}
+	    
 		public Licence putDetails(UUID id) {
 			Optional<Licence> obj = repositoryLicence.findById(id);
 			Licence obj1 = obj.get();
 			
 			LocalDateTime activationDate =  LocalDateTime.now();
-            LocalDateTime expiryDate = activationDate.minusYears(-1);
-            LocalDateTime gracePeriodEndDate = expiryDate.minusDays(-15);
-			
+            LocalDateTime expiryDate = activationDate.plusMinutes(1);
+            LocalDateTime gracePeriodEndDate = expiryDate.plusMinutes(1);               			
 			obj1.setStatus(Status.ACTIVE);
 			obj1.setExpiredStatus(ExpiredStatus.NON_EXPIRED);
 			obj1.setActivationDate(activationDate.toString());
 			obj1.setExpiryDate(expiryDate.toString());
 			obj1.setGracePeriodEndDate(gracePeriodEndDate.toString());
 			return repositoryLicence.save(obj1);
-			
 		}
-		
-
 }

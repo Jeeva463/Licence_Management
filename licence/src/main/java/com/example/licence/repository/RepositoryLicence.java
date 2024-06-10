@@ -1,5 +1,7 @@
 package com.example.licence.repository;
 
+import java.util.ArrayList;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,7 +14,8 @@ public interface RepositoryLicence extends JpaRepository<Licence, UUID> {
 
 
 
-	Licence findBylicenceKey(String licenceKey);
+	Optional<Licence> findBylicenceKey(String licenceKey);
+
 
 	
 
