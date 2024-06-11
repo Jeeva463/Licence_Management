@@ -24,26 +24,27 @@ public class SchedulingConfig {
 	public void updateExpiredStatuses() {
 		List<Licence> licences = repositoryLicence.findAll();
 		LocalDateTime now = LocalDateTime.now();
-
 		List<Licence> arrayList = new ArrayList<>();
 		for (Licence licence : licences) {
-
-			LocalDateTime expiryDate = LocalDateTime.parse(licence.getExpiryDate());
+			LocalDateTime expiryDate = LocalDateTime.parse(licence.getExpiryDate());//parse edhu use panna reason expiryDate string irundhadhala
 			LocalDateTime gracePeriodEndDate = LocalDateTime.parse(licence.getGracePeriodEndDate());
 
+			if (licence.getStatus() != null && licence.getExpiredStatus() == null) {
+				licence.setExpiredStatus(ExpiredStatus.NON_EXPIRED);
+			}
 			if (licence.getStatus() != null && licence.getExpiredStatus() != null) {
-				if (gracePeriodEndDate.isBefore(expiryDate)) {
+
+				if (now.isAfter(expiryDate) && now.isBefore(gracePeriodEndDate)) {
+																
 					licence.setExpiredStatus(ExpiredStatus.EXPIRED_SOON);
-				}  
-				if(now.isAfter(gracePeriodEndDate)){
+				}
+				if (gracePeriodEndDate.isBefore(now)) {// gracePeriodEndDate enbadhu,now mun(isBefore)irukkuradhu 
 					licence.setExpiredStatus(ExpiredStatus.EXPIRED);
 					licence.setStatus(Status.INACTIVE);
 				}
 				arrayList.add(licence);
 			}
-		}
-		if (!arrayList.isEmpty()) {
-			repositoryLicence.saveAll(arrayList);
-		}
+		}		
+			repositoryLicence.saveAll(arrayList);		
 	}
 }
