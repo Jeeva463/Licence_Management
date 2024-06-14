@@ -3,6 +3,7 @@ package com.example.licence.service;
 
 import java.security.SecureRandom;
 import java.util.Base64;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import javax.crypto.SecretKey;
@@ -56,5 +57,10 @@ public class ServiceLicence {
         return EncryptionDecryption.encrypt(data, secretKey);
         
     }
+    //testing
+	public List<Licence> getDetails() {
+		return repositoryLicence.findAll();
+		
+	}
 
 }

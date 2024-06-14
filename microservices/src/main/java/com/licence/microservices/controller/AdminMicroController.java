@@ -1,17 +1,19 @@
 package com.licence.microservices.controller;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.example.licence.dto.DataResponse;
-import com.example.licence.entity.Licence;
+import com.licence.microservices.dto.LicenceDto;
+import com.licence.microservices.dto.Response;
 import com.licence.microservices.service.AdminMicroService;
 
 @RestController
@@ -21,19 +23,30 @@ public class AdminMicroController {
 	@Autowired
 	AdminMicroService microserviceService;
 	    //Practice
-	//String Type
-	@GetMapping("/getmicro/{id}")
-	public String getByid(@PathVariable ("id") UUID id){		
-		return microserviceService.getByid(id);
+//	//String Type
+//	@GetMapping("/getmicro/{id}")
+//	public String getByid(@PathVariable ("id") UUID id){		
+//		return microserviceService.getByid(id);
+//	}
+//	//Obj Type
+//	@GetMapping("/getmicro/{id}")
+//	public LicenceDto getByid(@PathVariable ("id") UUID id){		
+//		return microserviceService.getByid(id);
+//	}
+	//Entity Type
+		@GetMapping("/getmicro/{id}")
+		public ResponseEntity<LicenceDto> getByid(@PathVariable ("id") UUID id){		
+			return microserviceService.getByid(id);
+		}
+	//exchange Type
+	@GetMapping("getall")
+	public ResponseEntity<List<LicenceDto>> getdetails(){
+		return microserviceService.getdetails();
 	}
-	/*//Obj Type
-	@GetMapping("/getmicro/{id}")
-	public Licence getByid(@PathVariable ("id") UUID id){		
-		return microserviceService.getByid(id);
-	}*/
+	
     @PostMapping("/decrypt")
 	
-    public String decryptData(@RequestBody DataResponse response) {
+    public String decryptData(@RequestBody Response response) {
         try {
             // Set the secret key
         	microserviceService.setSecretKey(response.getSecretKey());
@@ -46,6 +59,10 @@ public class AdminMicroController {
         }
         
         }
+    @GetMapping("/getlicencekey/{licencekey}")
+    public LicenceDto getBylicencekey(@PathVariable String licencekey) {
+    	return microserviceService.getBylicencekey(licencekey);
+    }
 	
 
 }

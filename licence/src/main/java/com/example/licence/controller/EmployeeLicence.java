@@ -1,5 +1,6 @@
 package com.example.licence.controller;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,12 @@ public class EmployeeLicence {
 	
 	public Optional <Licence> getByid(@PathVariable ("id") UUID id) {
 		return serviceLicence.getByid(id);
+		
+	}
+	//testing
+	@GetMapping("/getall")
+	public List<Licence> getDetails(){
+		return serviceLicence.getDetails();
 		
 	}
     @PostMapping("/generate-and-encrypt")
