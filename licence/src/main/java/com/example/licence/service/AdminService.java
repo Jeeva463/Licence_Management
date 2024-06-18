@@ -11,6 +11,8 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.example.licence.dto.EncryptedData;
 import com.example.licence.encryptionutil.EncryptionDecryption;
 import com.example.licence.entity.Licence;
 import com.example.licence.enumaration.ExpiredStatus;
@@ -22,6 +24,8 @@ public class AdminService {
 	
 	@Autowired
 	RepositoryLicence repositoryLicence;
+	Licence licence;
+	EncryptedData encryptedData;
 	
 	private SecretKey secretKey;
 //	private Object expiredStatus;
@@ -60,5 +64,14 @@ public class AdminService {
 			obj1.setExpiryDate(expiryDate.toString());
 			obj1.setGracePeriodEndDate(gracePeriodEndDate.toString());
 			return repositoryLicence.save(obj1);
+		}
+		public Licence validateLicenseKey(String encryptedlicenseKey) {
+			if(licence.getLicenceKey().equals(encryptedData.getEncryptedlicenseKey())) {
+				licence.setStatus(Status.APPROVED);
+				return repositoryLicence.save(licence);
+			}else {
+				return licence;
+			}
+			
 		}
 }

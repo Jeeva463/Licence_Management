@@ -2,8 +2,11 @@ package com.example.licence.service;
 
 
 import java.security.SecureRandom;
+import java.time.LocalDateTime;
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import javax.crypto.SecretKey;
@@ -41,10 +44,14 @@ public class ServiceLicence {
         return licenseKey.toString();
 		
 	}
-	public Optional<Licence> getByid(UUID id) {
-		return repositoryLicence.findById(id);
-		
-	}
+//	public Optional<Licence> getByid(UUID id) {
+//		return repositoryLicence.findById(id);
+//		
+//	}
+		public List<Licence> getDetails() {
+			return repositoryLicence.findAll();
+			
+		}
     public String GenerateSec() throws Exception {
         // Generate a new secret key during service initialization
         this.secretKey = EncryptionDecryption.secretkeyGen();
@@ -57,10 +64,12 @@ public class ServiceLicence {
         return EncryptionDecryption.encrypt(data, secretKey);
         
     }
-    //testing
-	public List<Licence> getDetails() {
-		return repositoryLicence.findAll();
-		
-	}
-
+    public Map getdetails(String licenceKey) {
+    	Optional<Licence> licence = repositoryLicence.findBylicenceKey(licenceKey);
+    	Licence obj = licence.get();
+    	Map<String, Object> map = new HashMap<String, Object>();
+    	map.put("time", LocalDateTime.now());
+    	map.put("Licence", obj);
+		return map;
+    } 
 }

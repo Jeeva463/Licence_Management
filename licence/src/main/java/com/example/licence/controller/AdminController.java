@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.licence.dto.DataResponse;
+import com.example.licence.dto.EncryptedData;
 import com.example.licence.entity.Licence;
 import com.example.licence.service.AdminService;
 
@@ -21,22 +22,32 @@ import com.example.licence.service.AdminService;
 public class AdminController {
 	@Autowired
 	AdminService adminService;
-	
+	EncryptedData encryptedData;
 	@PostMapping("/decrypt")
 	
-    public String decryptData(@RequestBody DataResponse response) {
-        try {
-            // Set the secret key
-        	adminService.setSecretKey(response.getSecretKey());
-            
-            // Decrypt the license key
-            return adminService.decryptData(response.getData());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "Error decrypting data";
-        }
-        
-        }
+//    public String decryptData(@RequestBody DataResponse response) {
+//        try {
+//            // Set the secret key
+//        	adminService.setSecretKey(response.getSecretKey());
+//            
+//            // Decrypt the license key
+//            return adminService.decryptData(response.getData());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return "Error decrypting data";
+//        }
+//        
+//        }
+	public Licence decryptData(@RequestBody DataResponse response) throws Exception {       
+        // Set the secret key
+    	adminService.setSecretKey(response.getSecretKey());
+    	
+        // Decrypt the license key
+         adminService.decryptData(response.getData());
+         
+         return adminService.validateLicenseKey(encryptedData.getEncryptedlicenseKey());
+         
+}
 	@GetMapping("/get/{licenceKey}")
 	
 	public Map getdetails(@PathVariable String licenceKey) {

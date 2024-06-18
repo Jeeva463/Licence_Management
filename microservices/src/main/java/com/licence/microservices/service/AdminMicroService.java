@@ -34,22 +34,22 @@ public class AdminMicroService {
 //		String id1 = restTemplate.getForObject("http://localhost:8080/api/licence/getlicence/aa909b93-de62-43f4-a3ee-ffae10675c09", String.class);		
 //		return id1;
 //	}
-//	//Obj Type--getForObject
+	//Obj Type--getForObject
 //	public LicenceDto getByid(UUID id) {
 //		LicenceDto id1 = restTemplate.getForObject("http://localhost:8080/api/licence/getlicence/aa909b93-de62-43f4-a3ee-ffae10675c09", LicenceDto.class, id);		
 //		return id1;
 //	}
 	//Use in exchange
-	public ResponseEntity<List<LicenceDto>> getdetails() {
-		ResponseEntity<List<LicenceDto>> licencedto=restTemplate.exchange("http://localhost:8080/api/licence/getall", HttpMethod.GET, null, new ParameterizedTypeReference<List<LicenceDto>>() {});
-		return licencedto;
-		
-	}
-	//Entity Type--getForEntity
-		public ResponseEntity<LicenceDto> getByid(UUID id) {
-			ResponseEntity<LicenceDto> id1 = restTemplate.getForEntity("http://localhost:8080/api/licence/getlicence/aa909b93-de62-43f4-a3ee-ffae10675c09", LicenceDto.class, id);		
-			return id1;
-		}
+//	public ResponseEntity<List<LicenceDto>> getdetails() {
+//		ResponseEntity<List<LicenceDto>> licencedto=restTemplate.exchange("http://localhost:8080/api/licence/getall", HttpMethod.GET, null, new ParameterizedTypeReference<List<LicenceDto>>() {});
+//		return licencedto;
+//		
+//	}
+//	//Entity Type--getForEntity
+//		public ResponseEntity<LicenceDto> getByid(UUID id) {
+//			ResponseEntity<LicenceDto> id1 = restTemplate.getForEntity("http://localhost:8080/api/licence/getlicence/aa909b93-de62-43f4-a3ee-ffae10675c09", LicenceDto.class, id);		
+//			return id1;
+//		}
 	
 	 public String decryptData(String data) throws Exception {
 	        return Decryption.decrypt(data, secretKey);
@@ -60,10 +60,11 @@ public class AdminMicroService {
 	        this.secretKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
 	        
 	    }
-		public LicenceDto getBylicencekey(String licencekey) {
-			LicenceDto licenceDto = restTemplate.getForObject("http://localhost:8080/api/licence", LicenceDto.class, licencekey);
-			return licenceDto;
-				
+		public LicenceDto getdetails(String licencekey) {
+			
+		LicenceDto id1 = restTemplate.getForObject("http://localhost:8080/api/licence/get/NBAH7O0WBTBCMC01", LicenceDto.class, licencekey);		
+		return id1;
+			
 		}
 
 }

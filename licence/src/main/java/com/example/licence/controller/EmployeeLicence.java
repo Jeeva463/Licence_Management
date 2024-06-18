@@ -1,6 +1,7 @@
 package com.example.licence.controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,13 +31,12 @@ public class EmployeeLicence {
 		return licence;
 		
 	}
-	@GetMapping("/getlicence/{id}")
-	
-	public Optional <Licence> getByid(@PathVariable ("id") UUID id) {
-		return serviceLicence.getByid(id);
-		
-	}
-	//testing
+//	@GetMapping("/getlicence/{id}")
+//	
+//	public Optional <Licence> getByid(@PathVariable ("id") UUID id) {
+//		return serviceLicence.getByid(id);
+//		
+//	}
 	@GetMapping("/getall")
 	public List<Licence> getDetails(){
 		return serviceLicence.getDetails();
@@ -59,5 +59,10 @@ public class EmployeeLicence {
             return new DataResponse("Error encrypting data", "Error generating secret key");
         }
     }
+   @GetMapping("/get/{licenceKey}")
+	
+	public Map getdetails(@PathVariable String licenceKey) {
+		return serviceLicence.getdetails(licenceKey);
+}
 }
 

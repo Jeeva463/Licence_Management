@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.licence.microservices.dto.LicenceDto;
 import com.licence.microservices.dto.Response;
@@ -34,23 +35,22 @@ public class AdminMicroController {
 //		return microserviceService.getByid(id);
 //	}
 	//Entity Type
-		@GetMapping("/getmicro/{id}")
-		public ResponseEntity<LicenceDto> getByid(@PathVariable ("id") UUID id){		
-			return microserviceService.getByid(id);
-		}
-	//exchange Type
-	@GetMapping("getall")
-	public ResponseEntity<List<LicenceDto>> getdetails(){
-		return microserviceService.getdetails();
-	}
+//		@GetMapping("/getmicro/{id}")
+//		public ResponseEntity<LicenceDto> getByid(@PathVariable ("id") UUID id){		
+//			return microserviceService.getByid(id);
+//		}
+//	//exchange Type
+//	@GetMapping("getall")
+//	public ResponseEntity<List<LicenceDto>> getdetails(){
+//		return microserviceService.getdetails();
+//	}
 	
     @PostMapping("/decrypt")
 	
     public String decryptData(@RequestBody Response response) {
         try {
             // Set the secret key
-        	microserviceService.setSecretKey(response.getSecretKey());
-            
+        	microserviceService.setSecretKey(response.getSecretKey());        	  
             // Decrypt the license key
             return microserviceService.decryptData(response.getData());
         } catch (Exception e) {
@@ -59,10 +59,5 @@ public class AdminMicroController {
         }
         
         }
-    @GetMapping("/getlicencekey/{licencekey}")
-    public LicenceDto getBylicencekey(@PathVariable String licencekey) {
-    	return microserviceService.getBylicencekey(licencekey);
-    }
-	
 
 }
