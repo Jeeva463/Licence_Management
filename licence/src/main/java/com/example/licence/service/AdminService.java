@@ -11,8 +11,6 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.example.licence.dto.EncryptedData;
 import com.example.licence.encryptionutil.EncryptionDecryption;
 import com.example.licence.entity.Licence;
 import com.example.licence.enumaration.ExpiredStatus;
@@ -25,13 +23,7 @@ public class AdminService {
 	@Autowired
 	RepositoryLicence repositoryLicence;
 	Licence licence;
-	EncryptedData encryptedData;
-	
 	private SecretKey secretKey;
-//	private Object expiredStatus;
-//	private Object expiryDate;
-//	private Object activationDate;
-//	private Object gracePeriodEndDate;
 	
 	 public String decryptData(String data) throws Exception {
 	        return EncryptionDecryption.decrypt(data, secretKey);
@@ -42,19 +34,11 @@ public class AdminService {
 	        this.secretKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
 	        
 	    }
-	    public Map getdetails(String licenceKey) {
-	    	Optional<Licence> licence = repositoryLicence.findBylicenceKey(licenceKey);
-	    	Map<String, Object> map = new HashMap<String, Object>();
-	    	map.put("time", LocalDateTime.now());
-	    	map.put("Licence", licence);
-			return map;
-			
-		}
-	    
-		public Licence putDetails(UUID id) {
-			Optional<Licence> obj = repositoryLicence.findById(id);
+  
+		public Map putDetails(String licenceKey) {
+			Optional<Licence> obj = repositoryLicence.findBylicenceKey(licenceKey);
 			Licence obj1 = obj.get();
-			
+			Map<String, Object> map = new HashMap<String, Object>();
 			LocalDateTime activationDate =  LocalDateTime.now();
             LocalDateTime expiryDate = activationDate.plusMinutes(1);
             LocalDateTime gracePeriodEndDate = expiryDate.plusMinutes(1);               			
@@ -63,15 +47,19 @@ public class AdminService {
 			obj1.setActivationDate(activationDate.toString());
 			obj1.setExpiryDate(expiryDate.toString());
 			obj1.setGracePeriodEndDate(gracePeriodEndDate.toString());
-			return repositoryLicence.save(obj1);
-		}
-		public Licence validateLicenseKey(String encryptedlicenseKey) {
-			if(licence.getLicenceKey().equals(encryptedData.getEncryptedlicenseKey())) {
-				licence.setStatus(Status.APPROVED);
-				return repositoryLicence.save(licence);
-			}else {
-				return licence;
-			}
+			repositoryLicence.save(obj1);
+			map.put("time", LocalDateTime.now());
+			map.put("Licence", obj1);
+			return map;
 			
 		}
+//	    public Map getdetails(String licenceKey) {
+//    	Optional<Licence> licence = repositoryLicence.findBylicenceKey(licenceKey);
+//    	Map<String, Object> map = new HashMap<String, Object>();
+//    	map.put("time", LocalDateTime.now());
+//    	map.put("Licence", licence);
+//		return map;
+//		
+//	}
+  
 }

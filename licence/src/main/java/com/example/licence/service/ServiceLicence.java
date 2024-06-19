@@ -13,6 +13,8 @@ import javax.crypto.SecretKey;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.example.licence.dto.LicenceDto;
 import com.example.licence.encryptionutil.EncryptionDecryption;
 import com.example.licence.entity.Licence;
 import com.example.licence.enumaration.Status;
@@ -44,13 +46,12 @@ public class ServiceLicence {
         return licenseKey.toString();
 		
 	}
-//	public Optional<Licence> getByid(UUID id) {
-//		return repositoryLicence.findById(id);
-//		
-//	}
-		public List<Licence> getDetails() {
-			return repositoryLicence.findAll();
-			
+	public Map getDetails() {
+			Map<String,Object> map = new HashMap<String, Object>();
+			map.put("repositoryLicence", repositoryLicence.findAll());
+			map.put("time", LocalDateTime.now());
+			return  map;
+			 	
 		}
     public String GenerateSec() throws Exception {
         // Generate a new secret key during service initialization
@@ -64,12 +65,20 @@ public class ServiceLicence {
         return EncryptionDecryption.encrypt(data, secretKey);
         
     }
-    public Map getdetails(String licenceKey) {
-    	Optional<Licence> licence = repositoryLicence.findBylicenceKey(licenceKey);
-    	Licence obj = licence.get();
-    	Map<String, Object> map = new HashMap<String, Object>();
-    	map.put("time", LocalDateTime.now());
-    	map.put("Licence", obj);
-		return map;
-    } 
+//	public Optional<Licence> getByid(UUID id) {
+//	return repositoryLicence.findById(id);
+//	
+//}
+//    public Map getdetails(String licenceKey) {
+//    	Optional<Licence> licence = repositoryLicence.findBylicenceKey(licenceKey);
+//    	Licence obj = licence.get();
+//    	Map<String, Object> map = new HashMap<String, Object>();
+//    	map.put("time", LocalDateTime.now());
+//    	map.put("Licence", obj);
+//		return map;
+//    } 
+	public void postDetails(LicenceDto licenceDto) {
+		
+		
+	}
 }

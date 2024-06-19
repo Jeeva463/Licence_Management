@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.licence.dto.DataResponse;
+import com.example.licence.dto.LicenceDto;
 import com.example.licence.encryptionutil.EncryptionDecryption;
 import com.example.licence.entity.Licence;
 import com.example.licence.service.ServiceLicence;
@@ -31,14 +32,8 @@ public class EmployeeLicence {
 		return licence;
 		
 	}
-//	@GetMapping("/getlicence/{id}")
-//	
-//	public Optional <Licence> getByid(@PathVariable ("id") UUID id) {
-//		return serviceLicence.getByid(id);
-//		
-//	}
 	@GetMapping("/getall")
-	public List<Licence> getDetails(){
+	public Map getDetails(){
 		return serviceLicence.getDetails();
 		
 	}
@@ -59,10 +54,24 @@ public class EmployeeLicence {
             return new DataResponse("Error encrypting data", "Error generating secret key");
         }
     }
-   @GetMapping("/get/{licenceKey}")
-	
-	public Map getdetails(@PathVariable String licenceKey) {
-		return serviceLicence.getdetails(licenceKey);
-}
+    @PostMapping("/post")
+    
+    public LicenceDto postDetails(@RequestBody LicenceDto licenceDto) {
+    	serviceLicence.postDetails(licenceDto);
+    }
+    
+    
+    
+//	@GetMapping("/getlicence/{id}")
+//	
+//	public Optional <Licence> getByid(@PathVariable ("id") UUID id) {
+//		return serviceLicence.getByid(id);
+//		
+//	}
+//   @GetMapping("/get/{licenceKey}")
+//	
+//	public Map getdetails(@PathVariable String licenceKey) {
+//		return serviceLicence.getdetails(licenceKey);
+//}
 }
 

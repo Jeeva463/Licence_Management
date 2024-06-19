@@ -60,10 +60,14 @@ public class AdminMicroService {
 	        this.secretKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
 	        
 	    }
-		public LicenceDto getdetails(String licencekey) {
-			
-		LicenceDto id1 = restTemplate.getForObject("http://localhost:8080/api/licence/get/NBAH7O0WBTBCMC01", LicenceDto.class, licencekey);		
-		return id1;
+//		public LicenceDto getdetails(String licencekey) {
+//			
+//		LicenceDto id1 = restTemplate.getForObject("http://localhost:8080/api/licence/get/NBAH7O0WBTBCMC01", LicenceDto.class, licencekey);		
+//		return id1;
+//			
+//		}
+		public void updateDetails(String licencekey) {
+			LicenceDto licenceDto = restTemplate.getForObject("http://localhost:8080/api/admin/update+licenceKey", LicenceDto.class, licencekey);
 			
 		}
 
