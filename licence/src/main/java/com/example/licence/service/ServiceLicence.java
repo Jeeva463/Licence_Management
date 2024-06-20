@@ -12,6 +12,7 @@ import java.util.UUID;
 import javax.crypto.SecretKey;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.licence.dto.LicenceDto;
@@ -69,16 +70,56 @@ public class ServiceLicence {
 //	return repositoryLicence.findById(id);
 //	
 //}
-//    public Map getdetails(String licenceKey) {
-//    	Optional<Licence> licence = repositoryLicence.findBylicenceKey(licenceKey);
-//    	Licence obj = licence.get();
-//    	Map<String, Object> map = new HashMap<String, Object>();
-//    	map.put("time", LocalDateTime.now());
-//    	map.put("Licence", obj);
-//		return map;
-//    } 
-	public void postDetails(LicenceDto licenceDto) {
-		
+    public Map getdetails(String licenceKey) {
+    	Optional<Licence> licence = repositoryLicence.findBylicenceKey(licenceKey);
+    	Licence obj = licence.get();
+    	Map<String, Object> map = new HashMap<String, Object>();
+    	map.put("time", LocalDateTime.now());
+    	map.put("Licence", obj);
+		return map;
+    } 
+	public ResponseEntity<?> getBylicencekey(String licencekey) {
+		Optional<Licence>obj = repositoryLicence.findBylicenceKey(licencekey);
+		Licence lice =obj.get();
+		LicenceDto dto = new LicenceDto();
+		dto.setId(lice.getId());
+		dto.setCompanyName(lice.getCompanyName());
+		dto.setCompanyAddress(lice.getCompanyAddress());
+		dto.setContactNumber(lice.getContactNumber());
+		dto.setEmailId(lice.getEmailId());
+		dto.setLicenceKey(lice.getLicenceKey());
+		dto.setStatus(lice.getStatus());
+		dto.setExpiredStatus(lice.getExpiredStatus());
+		dto.setExpiryDate(lice.getExpiryDate());
+		dto.setActivationDate(lice.getActivationDate());
+		dto.setGracePeriodEndDate(lice.getGracePeriodEndDate());
+		return ResponseEntity.ok(dto);
 		
 	}
+	public ResponseEntity<?> post(LicenceDto licenceDto) {
+		Optional<Licence> obj = repositoryLicence.findById(licenceDto.getId());
+		Licence licen = obj.get();
+		licen.setActivationDate(licenceDto.getActivationDate());
+		licen.setExpiryDate(licenceDto.getExpiryDate());
+		licen.setExpiredStatus(licenceDto.getExpiredStatus());
+		licen.setGracePeriodEndDate(licenceDto.getGracePeriodEndDate());
+		licen.setStatus(licenceDto.getStatus());
+		repositoryLicence.save(licen);
+
+		LicenceDto dto = new LicenceDto();
+		dto.setId(licen.getId());
+		dto.setCompanyName(licen.getCompanyName());
+		dto.setCompanyAddress(licen.getCompanyAddress());
+		dto.setContactNumber(licen.getContactNumber());
+		dto.setEmailId(licen.getEmailId());
+		dto.setLicenceKey(licen.getLicenceKey());
+		dto.setStatus(licen.getStatus());
+		dto.setExpiredStatus(licen.getExpiredStatus());
+		dto.setExpiryDate(licen.getExpiryDate());
+		dto.setActivationDate(licen.getActivationDate());
+		dto.setGracePeriodEndDate(licen.getGracePeriodEndDate());
+		return ResponseEntity.ok(dto);
+	}
 }
+
+

@@ -5,9 +5,11 @@ import java.util.UUID;
 import com.licence.microservices.enumaration.ExpiredStatus;
 import com.licence.microservices.enumaration.Status;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class LicenceDto {
 	
 	private UUID id;

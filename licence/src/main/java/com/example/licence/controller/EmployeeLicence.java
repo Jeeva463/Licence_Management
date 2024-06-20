@@ -5,10 +5,12 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -54,11 +56,18 @@ public class EmployeeLicence {
             return new DataResponse("Error encrypting data", "Error generating secret key");
         }
     }
+    @GetMapping("/get/{licencekey}")
+    
+    public ResponseEntity<?> getBylicencekey(@PathVariable String licencekey) {
+    	return serviceLicence.getBylicencekey(licencekey);
+		
+    }
     @PostMapping("/post")
     
-    public LicenceDto postDetails(@RequestBody LicenceDto licenceDto) {
-    	serviceLicence.postDetails(licenceDto);
+    public ResponseEntity<?>post(@RequestBody LicenceDto licenceDto){
+    	return serviceLicence.post(licenceDto);
     }
+
     
     
     

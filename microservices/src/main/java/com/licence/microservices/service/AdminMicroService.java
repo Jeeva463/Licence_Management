@@ -1,5 +1,6 @@
 package com.licence.microservices.service;
 
+import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
@@ -10,11 +11,15 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.example.MainServices.enumuration.ExpiredStatus;
 import com.licence.microservices.config.Decryption;
 import com.licence.microservices.dto.LicenceDto;
 
@@ -66,9 +71,23 @@ public class AdminMicroService {
 //		return id1;
 //			
 //		}
-		public void updateDetails(String licencekey) {
-			LicenceDto licenceDto = restTemplate.getForObject("http://localhost:8080/api/admin/update+licenceKey", LicenceDto.class, licencekey);
+		public ResponseEntity<?> updateDetails(String licencekey) {
+			ResponseEntity<LicenceDto> licenceDto = restTemplate.getForEntity("http://localhost:8080/api/licence/get/DM3RQPU9G8FRN2UN", LicenceDto.class, licencekey);
+			LicenceDto licence = licenceDto.getBody();
 			
+			LocalDateTime activationDate =  LocalDateTime.now();
+            LocalDateTime expiryDate = activationDate.plusMinutes(1);
+            LocalDateTime gracePeriodEndDate = expiryDate.plusMinutes(1);
+            
+            LicenceDto dto = LicenceDto.builder().activationDate(activationDate.toString())
+					.companyAddress(licence.getCompanyAddress()).companyName(licence.getCompanyName())
+					.contactNumber(licence.getContactNumber()).expiredStatus(licence.getExpiredStatus())
+					.expiryDate(expiryDate.toString()).gracePeriodEndDate(gracePeriodEndDate.toString()).id(licence.getId())
+					.licenceKey(licence.getLicenceKey()).emailId(licence.getEmailId()).status(licence.getStatus())
+					.build();
+            HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			HttpEntity<LicenceDto> requestEntity = new HttpEntity<>(dto, headers);
 		}
 
 }

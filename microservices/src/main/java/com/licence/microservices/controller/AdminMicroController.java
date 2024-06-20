@@ -60,10 +60,10 @@ public class AdminMicroController {
         }
         
         }
-    @PutMapping("/update")
-    public LicenceDto updateDetails(@RequestBody String  licencekey ) {
+    @PutMapping("/update/{licencekey}")
+    public ResponseEntity<?> updateDetails(@PathVariable String  licencekey ) {
     	microserviceService.updateDetails(licencekey);
-		return null;
+		
     }
 
 }
