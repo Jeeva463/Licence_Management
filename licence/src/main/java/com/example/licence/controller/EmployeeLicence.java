@@ -62,25 +62,21 @@ public class EmployeeLicence {
     	return serviceLicence.getBylicencekey(licencekey);
 		
     }
-    @PostMapping("/post")
+    @PostMapping("/update")
     
-    public ResponseEntity<?>post(@RequestBody LicenceDto licenceDto){
-    	return serviceLicence.post(licenceDto);
+    public ResponseEntity<?>update(@RequestBody LicenceDto licenceDto){
+    	return serviceLicence.update(licenceDto);
     }
-
-    
-    
-    
 //	@GetMapping("/getlicence/{id}")
 //	
 //	public Optional <Licence> getByid(@PathVariable ("id") UUID id) {
 //		return serviceLicence.getByid(id);
 //		
 //	}
-//   @GetMapping("/get/{licenceKey}")
+//	@GetMapping("/getDetails")
 //	
-//	public Map getdetails(@PathVariable String licenceKey) {
-//		return serviceLicence.getdetails(licenceKey);
-//}
+//	public List<Licence> get(){
+//		return serviceLicence.get();	
+//	}
 }
 

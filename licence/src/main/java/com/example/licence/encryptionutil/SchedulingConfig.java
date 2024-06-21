@@ -19,7 +19,7 @@ import com.example.licence.repository.RepositoryLicence;
 public class SchedulingConfig {
 	@Autowired
 	RepositoryLicence repositoryLicence;
-
+	 
 	@Scheduled(fixedRate = 1000) // Runs every minute
 	public void updateExpiredStatuses() {
 		List<Licence> licences = repositoryLicence.findAll();

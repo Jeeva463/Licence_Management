@@ -3,13 +3,12 @@ package com.licence.microservices.service;
 import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -19,40 +18,40 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.example.MainServices.enumuration.ExpiredStatus;
 import com.licence.microservices.config.Decryption;
 import com.licence.microservices.dto.LicenceDto;
-
+import com.licence.microservices.enumaration.ExpiredStatus;
+import com.licence.microservices.enumaration.Status;
 
 @Service
 public class AdminMicroService {
-//
-//	@Value("${licence.baseUrl}")
-//	String licenceBaseUrl;
+
+	@Value("${licence.baseUrl}")
+	String licenceBaseUrl;
 	
 	@Autowired
 	 RestTemplate restTemplate;
 	private SecretKey secretKey;
 	
-//	//String Type--String.class
+	//String Type--String.class
 //	public String getByid(UUID id) {
-//		String id1 = restTemplate.getForObject("http://localhost:8080/api/licence/getlicence/aa909b93-de62-43f4-a3ee-ffae10675c09", String.class);		
+//		String id1 = restTemplate.getForObject(licenceBaseUrl+"/getlicence/"+id, String.class);		
 //		return id1;
 //	}
 	//Obj Type--getForObject
 //	public LicenceDto getByid(UUID id) {
-//		LicenceDto id1 = restTemplate.getForObject("http://localhost:8080/api/licence/getlicence/aa909b93-de62-43f4-a3ee-ffae10675c09", LicenceDto.class, id);		
+//		LicenceDto id1 = restTemplate.getForObject(licenceBaseUrl+"/getlicence/"+id, LicenceDto.class, id);		
 //		return id1;
 //	}
 	//Use in exchange
 //	public ResponseEntity<List<LicenceDto>> getdetails() {
-//		ResponseEntity<List<LicenceDto>> licencedto=restTemplate.exchange("http://localhost:8080/api/licence/getall", HttpMethod.GET, null, new ParameterizedTypeReference<List<LicenceDto>>() {});
-//		return licencedto;
-//		
+//		ResponseEntity<List<LicenceDto>> licencedto=restTemplate.exchange(licenceBaseUrl+"/getDetails", HttpMethod.GET, null, new ParameterizedTypeReference<List<LicenceDto>>() {});
+//		List<LicenceDto> dto = licencedto.getBody();
+//		return ResponseEntity.ok(dto);
 //	}
-//	//Entity Type--getForEntity
+	//Entity Type--getForEntity
 //		public ResponseEntity<LicenceDto> getByid(UUID id) {
-//			ResponseEntity<LicenceDto> id1 = restTemplate.getForEntity("http://localhost:8080/api/licence/getlicence/aa909b93-de62-43f4-a3ee-ffae10675c09", LicenceDto.class, id);		
+//			ResponseEntity<LicenceDto> id1 = restTemplate.getForEntity(licenceBaseUrl+"/getlicence/"+id, LicenceDto.class, id);		
 //			return id1;
 //		}
 	
@@ -72,7 +71,7 @@ public class AdminMicroService {
 //			
 //		}
 		public ResponseEntity<?> updateDetails(String licencekey) {
-			ResponseEntity<LicenceDto> licenceDto = restTemplate.getForEntity("http://localhost:8080/api/licence/get/DM3RQPU9G8FRN2UN", LicenceDto.class, licencekey);
+			ResponseEntity<LicenceDto> licenceDto = restTemplate.getForEntity(licenceBaseUrl+"/get/"+licencekey, LicenceDto.class, licencekey);
 			LicenceDto licence = licenceDto.getBody();
 			
 			LocalDateTime activationDate =  LocalDateTime.now();
@@ -81,13 +80,15 @@ public class AdminMicroService {
             
             LicenceDto dto = LicenceDto.builder().activationDate(activationDate.toString())
 					.companyAddress(licence.getCompanyAddress()).companyName(licence.getCompanyName())
-					.contactNumber(licence.getContactNumber()).expiredStatus(licence.getExpiredStatus())
+					.contactNumber(licence.getContactNumber()).expiredStatus(ExpiredStatus.NON_EXPIRED)
 					.expiryDate(expiryDate.toString()).gracePeriodEndDate(gracePeriodEndDate.toString()).id(licence.getId())
-					.licenceKey(licence.getLicenceKey()).emailId(licence.getEmailId()).status(licence.getStatus())
+					.licenceKey(licence.getLicenceKey()).emailId(licence.getEmailId()).status(Status.ACTIVE)
 					.build();
             HttpHeaders headers = new HttpHeaders();
 			headers.setContentType(MediaType.APPLICATION_JSON);
-			HttpEntity<LicenceDto> requestEntity = new HttpEntity<>(dto, headers);
+			HttpEntity<LicenceDto> requestEntity = new HttpEntity<>(dto,headers);
+			restTemplate.postForEntity(licenceBaseUrl+"/update", requestEntity, LicenceDto.class);
+			return ResponseEntity.ok(dto);
 		}
 
 }

@@ -65,18 +65,6 @@ public class ServiceLicence {
     public String encryptData(String data) throws Exception {
         return EncryptionDecryption.encrypt(data, secretKey);
         
-    }
-//	public Optional<Licence> getByid(UUID id) {
-//	return repositoryLicence.findById(id);
-//	
-//}
-    public Map getdetails(String licenceKey) {
-    	Optional<Licence> licence = repositoryLicence.findBylicenceKey(licenceKey);
-    	Licence obj = licence.get();
-    	Map<String, Object> map = new HashMap<String, Object>();
-    	map.put("time", LocalDateTime.now());
-    	map.put("Licence", obj);
-		return map;
     } 
 	public ResponseEntity<?> getBylicencekey(String licencekey) {
 		Optional<Licence>obj = repositoryLicence.findBylicenceKey(licencekey);
@@ -96,7 +84,7 @@ public class ServiceLicence {
 		return ResponseEntity.ok(dto);
 		
 	}
-	public ResponseEntity<?> post(LicenceDto licenceDto) {
+	public ResponseEntity<?> update(LicenceDto licenceDto) {
 		Optional<Licence> obj = repositoryLicence.findById(licenceDto.getId());
 		Licence licen = obj.get();
 		licen.setActivationDate(licenceDto.getActivationDate());
@@ -120,6 +108,14 @@ public class ServiceLicence {
 		dto.setGracePeriodEndDate(licen.getGracePeriodEndDate());
 		return ResponseEntity.ok(dto);
 	}
+//	public List<Licence> get() {
+//		return repositoryLicence.findAll();
+//		
+//	}
+//	public Optional<Licence> getByid(UUID id) {
+//		return repositoryLicence.findById(id);
+//		
+//	}
 }
 
 

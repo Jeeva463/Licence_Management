@@ -25,12 +25,12 @@ public class AdminMicroController {
 	@Autowired
 	AdminMicroService microserviceService;
 	    //Practice
-//	//String Type
+	//String Type
 //	@GetMapping("/getmicro/{id}")
 //	public String getByid(@PathVariable ("id") UUID id){		
 //		return microserviceService.getByid(id);
 //	}
-//	//Obj Type
+	//Obj Type
 //	@GetMapping("/getmicro/{id}")
 //	public LicenceDto getByid(@PathVariable ("id") UUID id){		
 //		return microserviceService.getByid(id);
@@ -40,8 +40,8 @@ public class AdminMicroController {
 //		public ResponseEntity<LicenceDto> getByid(@PathVariable ("id") UUID id){		
 //			return microserviceService.getByid(id);
 //		}
-//	//exchange Type
-//	@GetMapping("getall")
+	//exchange Type
+//	@GetMapping("/getall")
 //	public ResponseEntity<List<LicenceDto>> getdetails(){
 //		return microserviceService.getdetails();
 //	}
@@ -62,7 +62,7 @@ public class AdminMicroController {
         }
     @PutMapping("/update/{licencekey}")
     public ResponseEntity<?> updateDetails(@PathVariable String  licencekey ) {
-    	microserviceService.updateDetails(licencekey);
+    	return microserviceService.updateDetails(licencekey);
 		
     }
 
