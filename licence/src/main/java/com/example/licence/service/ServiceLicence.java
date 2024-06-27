@@ -13,13 +13,20 @@ import javax.crypto.SecretKey;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import com.example.licence.dto.DataResponse;
+import com.example.licence.dto.EmailStructure;
 import com.example.licence.dto.LicenceDto;
 import com.example.licence.encryptionutil.EncryptionDecryption;
 import com.example.licence.entity.Licence;
 import com.example.licence.enumaration.Status;
 import com.example.licence.repository.RepositoryLicence;
+
+import jakarta.mail.internet.MimeMessage;
 
 @Service
 public class ServiceLicence {
@@ -29,8 +36,10 @@ public class ServiceLicence {
 	private static  final  SecureRandom random = new SecureRandom();
 	
 	@Autowired
+	JavaMailSender javaMailSender;
 	RepositoryLicence repositoryLicence;
 	private SecretKey secretKey;
+	DataResponse response;
 
 	public Licence createlicence(Licence licence) {
 		licence.setStatus(Status.INACTIVE);
@@ -116,6 +125,28 @@ public class ServiceLicence {
 //		return repositoryLicence.findById(id);
 //		
 //	}
-}
+	public void getMail(EmailStructure emailStructure) throws Exception {
+            String toEmail = emailStructure.getToEmail();
+            String subject = emailStructure.getSubject();
+            
+            // Generate secret key and encrypt data
+            SecretKey secretKey = EncryptionDecryption.secretkeyGen();
+            String data = response.getData();
+            String encryptedData = EncryptionDecryption.encrypt(data, secretKey);
 
+            // Compose the email body
+            String body = String.format("{\n    \"secretKey\": \"%s\",\n    \"data\": \"%s\"\n}", secretKey.toString(), encryptedData);
+
+            // Create MimeMessage and MimeMessageHelper for complex email content
+            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+
+            helper.setTo(toEmail);
+            helper.setSubject(subject);
+            helper.setText(body);
+
+            // Send the email
+            javaMailSender.send(mimeMessage);
+}
+}
 

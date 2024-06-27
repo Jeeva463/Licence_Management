@@ -11,3 +11,6 @@ public class LicenceApplication {
 	}
 
 }
+//data objectla irukkum secretkey encrypted panna secretkey stringla irukkum
+//data encrypt datala irukkum decrypt panna secretkey Stringla irundhu secretkey 
+//change panni decrypt pannanum

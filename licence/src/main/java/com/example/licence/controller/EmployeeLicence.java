@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.licence.dto.DataResponse;
+import com.example.licence.dto.EmailStructure;
 import com.example.licence.dto.LicenceDto;
 import com.example.licence.encryptionutil.EncryptionDecryption;
 import com.example.licence.entity.Licence;
@@ -78,5 +80,10 @@ public class EmployeeLicence {
 //	public List<Licence> get(){
 //		return serviceLicence.get();	
 //	}
+    @PostMapping("/sendMail")
+    public String getMail(@RequestBody EmailStructure emailStructure ) throws Exception {
+    	serviceLicence.getMail(emailStructure);
+		return "sent a mail";
+    }
 }
 

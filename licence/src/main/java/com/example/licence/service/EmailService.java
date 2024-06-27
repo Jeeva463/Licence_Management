@@ -9,6 +9,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.licence.dto.EmailStructure;
 
@@ -44,43 +45,24 @@ public class EmailService {
 		message.setTo(mail);
 		javaMailSender.send(message);
 	}
+	public void post(String toEmail, String subject, String text, String attachment) throws MessagingException {
+	    MimeMessage message = javaMailSender.createMimeMessage();//message-இது ஒரு MimeMessage பொருள், இது நீங்கள் 
+	                                                             //உருவாக்கும் மின்னஞ்சல் செய்தியைக் குறிக்கிறது.
 
-//	public void post(EmailStructure emailStructure) {
-//		MimeMessageHelper helper = new MimeMessageHelper(message, true);
-//		helper.setFrom(fromMail);
-//		helper.setTo(emailStructure.getToEmail());
-//		helper.setSubject(emailStructure.getSubject());
-//		helper.setText(emailStructure.getBody());
-//		//MimeMessage message = javaMailSender.createMimeMessage(); 
-//		
-//		FileSystemResource fileSystemResource = new FileSystemResource(new File(emailStructure.getAttachment()));
-//
-//		helper.addAttachment(fileSystemResource.getFilename(), fileSystemResource);
-//
-//		javaMailSender.send(message);
-//		
-//	}
-	public void post(String toEmail, String subject, String text, String attachment) {
-	    MimeMessage message = javaMailSender.createMimeMessage();
-
-	    try {
 	        // Create the MimeMessageHelper with multipart support
 	        MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
 	        helper.setFrom(fromMail);
 	        helper.setTo(toEmail);
 	        helper.setSubject(subject);
-	        helper.setText(text);
+	        helper.setText(text,true);// true indicates the text is HTML
 
 	        // Add an attachment
-	        FileSystemResource file = new FileSystemResource(new File(attachment));
-	        helper.addAttachment(file.getFilename(), file);
-
+	        FileSystemResource filesystem = new FileSystemResource(new File(attachment));
+	        helper.addAttachment(attachment, filesystem);
+//C:/Users/jeeva/OneDrive/Pictures/Licence_Management/licence/Mail.Attachment/Image.jpeg
+//image irukkura place path and image name and image type @RequestParam la send pannanum(/ ipdi irukkanum)
 	        javaMailSender.send(message);
-	    } catch (MessagingException e) {
-	        e.printStackTrace();
-	        // Handle exception
-	    }
 	}
 
 
